@@ -1,0 +1,5 @@
+
+TimeCreated,ComputerName,UserName,CommandLine
+2026-11-09 11:00:00,WIN-01,Hafidh,whoami
+2026-11-09 11:02:00,WIN-02,Pedro,powershell -enc SQBFAFgA
+2026-11-09 11:05:00,WIN-03,Ihor,notepad.exe
