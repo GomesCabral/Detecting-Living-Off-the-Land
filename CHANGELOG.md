@@ -1,8 +1,8 @@
 # Changelog
 
-This file records the changes made in this shared project so teammates can review the work before it is pushed.
 
-## 2026-11-11 — Hafi Week 2 detection work
+
+## Hafi Week 2 detection work
 
 ### Updated
 
@@ -52,30 +52,3 @@ The changed Python files include comments identifying the Hafi Week 2 contributi
 - Sigma rules remain experimental and have not been converted or run in the team's selected backend.
 - Production false-positive/false-negative rates and operational severity tuning require representative, labeled telemetry.
 
-
-
-
-# Detecting Living Off the Land
-
-Shared team project for reviewing Windows LOLBin behavior. Week 2 detection work is integrated with the app, synthetic test cases, and experimental Sigma rules.
-
-## Run tests
-
-From this folder:
-
-
-The test cases are synthetic, inert event records. Tests exercise the local Python detector; they do not execute LOLBins or prove production false-positive rates.
-
-
-## Week 2 Hafi detection work
-
-- [Changelog](CHANGELOG.md) — files changed, features added, and validation results.
-- [Week 2 detection matrix](rules/sigma/week2/lolbin_detection_matrix.md)
-- [Week 2 completion and validation report](rules/sigma/week2/week2_complete_summary.md)
-- [Labeled synthetic cases](data/metadata/lotl_rule_test_cases.csv)
-- [Multi-tool browser demo logs](data/week2_demo_logs.csv) — 22 inert events covering positive and benign examples across the Week 2 rules.
-- [Sigma rules](rules/sigma/)
-- [Research and telemetry plan](docs/lotl_research_and_detection_plan.md)
-- [Week 2 detector tests](tests/test_week2_detection.py)
-
-All Sigma rules remain experimental until the team agrees on its backend and validates the rules against representative labeled telemetry.
