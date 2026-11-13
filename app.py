@@ -15,7 +15,7 @@ st.set_page_config(
 st.title("Threat Hunting Dashboard")
 
 st.write(
-    "Detect suspicious Windows commands "
+    "Review Windows commands for LOLBin indicators "
     "using Living Off the Land techniques."
 )
 
@@ -50,7 +50,13 @@ if uploaded_file is not None:
         for index, row in logs.iterrows():
 
             command = row["command_line"]
-            detections = analyze_command(command)
+            # Hafi Week 2: provide parent and event context to the expanded rules.
+            parent_process = row.get("parent_process", "")
+            detections = analyze_command(
+                command,
+                parent_process=parent_process,
+                event=row
+            )
 
             # Count events with at least one detection
             if detections:
@@ -62,10 +68,13 @@ if uploaded_file is not None:
                     "timestamp": row["timestamp"],
                     "computer": row["computer"],
                     "user": row["user"],
+                    "parent_process": parent_process,
                     "command_line": command,
+                    "rule_id": detection["rule_id"],
                     "detection": detection["detection"],
                     "severity": detection["severity"],
-                    "mitre_technique": detection["mitre_technique"]
+                    "mitre_technique": detection["mitre_technique"],
+                    "explanation": detection["explanation"]
                 })
 
         # Security metrics - OUTSIDE the for loop
@@ -92,7 +101,7 @@ if uploaded_file is not None:
         # Display detection results
         if alerts:
             st.warning(
-                f"{total_alerts} suspicious detections found!"
+                f"{total_alerts} behavior indicators found."
             )
 
             st.dataframe(
@@ -101,7 +110,7 @@ if uploaded_file is not None:
             )
 
         else:
-            st.success("No suspicious patterns detected.")
+            st.success("No matching indicators detected.")
 
 
     except ValueError as error:

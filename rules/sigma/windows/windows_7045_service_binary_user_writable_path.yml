@@ -1,0 +1,33 @@
+title: New Windows Service Uses a User-Writable Binary Path
+id: 987d0266-66a8-4e98-92d3-5e2949d8cb9b
+status: experimental
+description: >
+  Hunting hypothesis for service creation where the configured binary path
+  points to common user-writable locations. Verify event field names and
+  investigate legitimate installers, updaters, and management tools.
+references:
+  - https://attack.mitre.org/techniques/T1543/003/
+author: Threat Hunting Project Team
+date: 2026-11-09
+tags:
+  - attack.persistence
+  - attack.privilege_escalation
+  - attack.t1543.003
+logsource:
+  product: windows
+  service: system
+detection:
+  selection_event:
+    Provider_Name: Service Control Manager
+    EventID: 7045
+  selection_path:
+    ImagePath|contains:
+      - '\Users\Public\'
+      - '\AppData\'
+      - '\Temp\'
+      - '\ProgramData\'
+  condition: all of selection_*
+falsepositives:
+  - Legitimate application installers and updaters
+  - Organization-approved tools installed in writable locations
+level: medium

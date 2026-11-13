@@ -1,0 +1,37 @@
+title: Script Interpreter Spawned by an Office Application
+id: 0080a50e-975d-4a41-a1bb-b8c876c5cc13
+status: experimental
+description: >
+  Hunting hypothesis for a command or script interpreter launched directly by
+  an Office application. Review document provenance and the complete process
+  tree; legitimate add-ins and macros may create child processes.
+references:
+  - https://attack.mitre.org/techniques/T1059/
+author: Threat Hunting Project Team
+date: 2026-11-10
+tags:
+  - attack.execution
+  - attack.t1059
+logsource:
+  product: windows
+  category: process_creation
+  service: sysmon
+detection:
+  selection_parent:
+    ParentImage|endswith:
+      - '\winword.exe'
+      - '\excel.exe'
+      - '\powerpnt.exe'
+      - '\outlook.exe'
+  selection_child:
+    Image|endswith:
+      - '\cmd.exe'
+      - '\powershell.exe'
+      - '\pwsh.exe'
+      - '\wscript.exe'
+      - '\cscript.exe'
+      - '\mshta.exe'
+  condition: all of selection_*
+falsepositives:
+  - Approved Office macros, add-ins, and document automation
+level: high

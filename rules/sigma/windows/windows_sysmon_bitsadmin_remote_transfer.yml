@@ -1,0 +1,36 @@
+title: Bitsadmin Command Creates or Runs a Transfer Job
+id: b9f0897d-7f3a-4132-b81a-270c2cc67327
+status: experimental
+description: >
+  Hunting hypothesis for Bitsadmin transfer-job commands. A process event does
+  not establish whether a job completed; correlate with BITS client logs and
+  inspect remote source and destination.
+references:
+  - https://attack.mitre.org/techniques/T1197/
+  - https://attack.mitre.org/techniques/T1105/
+author: Threat Hunting Project Team
+date: 2026-11-10
+tags:
+  - attack.defense_evasion
+  - attack.t1197
+  - attack.command_and_control
+  - attack.t1105
+logsource:
+  product: windows
+  category: process_creation
+  service: sysmon
+detection:
+  selection_image:
+    Image|endswith: '\bitsadmin.exe'
+  selection_operation:
+    CommandLine|contains:
+      - '/transfer'
+      - '/addfile'
+  selection_remote:
+    CommandLine|contains:
+      - 'http://'
+      - 'https://'
+  condition: all of selection_*
+falsepositives:
+  - Approved background download or software deployment jobs
+level: medium

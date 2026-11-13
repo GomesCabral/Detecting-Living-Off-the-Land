@@ -1,0 +1,31 @@
+title: Rundll32 Uses Script or URL Proxy Execution Indicators
+id: 28b5731a-8784-440a-8aec-9206ccaa6688
+status: experimental
+description: >
+  Hunting hypothesis for Rundll32 command lines referencing URL handling or
+  script protocols. Triage the loaded module, export, signer, parent, and
+  network activity; Rundll32 has common legitimate uses.
+references:
+  - https://attack.mitre.org/techniques/T1218/011/
+author: Threat Hunting Project Team
+date: 2026-11-10
+tags:
+  - attack.defense_evasion
+  - attack.t1218.011
+logsource:
+  product: windows
+  category: process_creation
+  service: sysmon
+detection:
+  selection_image:
+    Image|endswith: '\rundll32.exe'
+  selection_indicator:
+    CommandLine|contains:
+      - 'javascript:'
+      - 'url.dll'
+      - 'http://'
+      - 'https://'
+  condition: all of selection_*
+falsepositives:
+  - Approved shell integrations, Control Panel features, or software installers
+level: medium

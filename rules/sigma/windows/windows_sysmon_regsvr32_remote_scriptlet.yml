@@ -1,0 +1,33 @@
+title: Regsvr32 Loads a Remote Scriptlet
+id: 8dc824ac-8306-4674-b750-511b86b573b3
+status: experimental
+description: >
+  Hunting hypothesis for Regsvr32 using scriptlet registration with a remote
+  source. Review the source, parent process, and network telemetry; COM
+  registration is also routine during software installation.
+references:
+  - https://attack.mitre.org/techniques/T1218/010/
+author: Threat Hunting Project Team
+date: 2026-11-10
+tags:
+  - attack.defense_evasion
+  - attack.t1218.010
+logsource:
+  product: windows
+  category: process_creation
+  service: sysmon
+detection:
+  selection_image:
+    Image|endswith: '\regsvr32.exe'
+  selection_scriptlet:
+    CommandLine|contains: 'scrobj.dll'
+  selection_install_option:
+    CommandLine|contains: '/i:'
+  selection_remote:
+    CommandLine|contains:
+      - 'http://'
+      - 'https://'
+  condition: all of selection_*
+falsepositives:
+  - Approved software COM registration or enterprise deployment
+level: high

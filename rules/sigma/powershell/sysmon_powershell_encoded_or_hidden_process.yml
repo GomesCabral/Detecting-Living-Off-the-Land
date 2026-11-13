@@ -1,0 +1,33 @@
+title: PowerShell Process Uses Encoded or Hidden Execution Flags
+id: 159b2978-6af9-4f5f-b41e-ea634c06b087
+status: experimental
+description: >
+  Hunting hypothesis for Sysmon process creation where PowerShell uses an
+  encoded-command or hidden-window flag. Confirm script content and parent
+  context; these flags also occur in automation.
+references:
+  - https://attack.mitre.org/techniques/T1059/001/
+author: Threat Hunting Project Team
+date: 2026-11-10
+tags:
+  - attack.execution
+  - attack.t1059.001
+logsource:
+  product: windows
+  category: process_creation
+  service: sysmon
+detection:
+  selection_image:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+  selection_flags:
+    CommandLine|contains:
+      - ' -enc '
+      - ' -encodedcommand '
+      - ' -windowstyle hidden '
+      - ' -w hidden '
+  condition: all of selection_*
+falsepositives:
+  - Approved automation, software deployment, and endpoint management scripts
+level: medium

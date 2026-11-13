@@ -1,0 +1,36 @@
+title: Certutil Used for Remote Retrieval or File Decoding
+id: 7ff88721-4d95-4abd-9775-6ea462befde5
+status: experimental
+description: >
+  Hunting hypothesis for Certutil command lines using URL cache retrieval or
+  decode operations. Confirm source, destination, signer, and follow-on
+  execution; certificate administration can use Certutil legitimately.
+references:
+  - https://attack.mitre.org/techniques/T1105/
+  - https://attack.mitre.org/techniques/T1140/
+author: Threat Hunting Project Team
+date: 2026-11-10
+tags:
+  - attack.command_and_control
+  - attack.t1105
+  - attack.defense_evasion
+  - attack.t1140
+logsource:
+  product: windows
+  category: process_creation
+  service: sysmon
+detection:
+  selection_image:
+    Image|endswith: '\certutil.exe'
+  selection_retrieval:
+    CommandLine|contains:
+      - '-urlcache'
+      - '-verifyctl'
+  selection_decode:
+    CommandLine|contains:
+      - '-decode '
+      - '-decodehex '
+  condition: selection_image and 1 of selection_retrieval, selection_decode
+falsepositives:
+  - Certificate maintenance, PKI troubleshooting, and approved software distribution
+level: medium

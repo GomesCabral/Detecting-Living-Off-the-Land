@@ -1,0 +1,35 @@
+title: WMI Event Consumer References a Script Interpreter or Writable Path
+id: 6bc3421d-ff21-4a43-838d-3f22fcd9ce1e
+status: experimental
+description: >
+  Hunting hypothesis for Sysmon WMI consumer creation whose destination
+  references a common script interpreter or writable location. Correlate with
+  filter and binding events 19 and 21 before concluding a subscription is active.
+references:
+  - https://attack.mitre.org/techniques/T1546/003/
+author: Threat Hunting Project Team
+date: 2026-11-09
+tags:
+  - attack.persistence
+  - attack.privilege_escalation
+  - attack.t1546.003
+logsource:
+  product: windows
+  service: sysmon
+detection:
+  selection_event:
+    EventID: 20
+  selection_destination:
+    Destination|contains:
+      - powershell
+      - cmd.exe
+      - wscript
+      - cscript
+      - mshta
+      - '\Users\'
+      - '\ProgramData\'
+      - '\Temp\'
+  condition: all of selection_*
+falsepositives:
+  - Legitimate WMI-based administration and monitoring software
+level: medium

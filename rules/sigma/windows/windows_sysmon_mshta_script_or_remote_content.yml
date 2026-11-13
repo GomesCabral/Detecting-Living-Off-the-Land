@@ -1,0 +1,31 @@
+title: Mshta Executes Inline Script or Remote Content
+id: e526fcf1-c555-4b1b-b21f-24c00fea4b70
+status: experimental
+description: >
+  Hunting hypothesis for Mshta command lines containing script protocols or a
+  remote URL. Review application origin and network events; legacy HTA tools
+  may be approved.
+references:
+  - https://attack.mitre.org/techniques/T1218/005/
+author: Threat Hunting Project Team
+date: 2026-11-10
+tags:
+  - attack.defense_evasion
+  - attack.t1218.005
+logsource:
+  product: windows
+  category: process_creation
+  service: sysmon
+detection:
+  selection_image:
+    Image|endswith: '\mshta.exe'
+  selection_script_or_remote:
+    CommandLine|contains:
+      - 'javascript:'
+      - 'vbscript:'
+      - 'http://'
+      - 'https://'
+  condition: all of selection_*
+falsepositives:
+  - Approved legacy HTA applications
+level: high

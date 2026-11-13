@@ -1,0 +1,31 @@
+title: PowerShell Script Block Contains High-Risk Execution Indicators
+id: 53061b63-7f9e-4da8-91f8-1e463ae2dc44
+status: experimental
+description: >
+  Hunting hypothesis for script block content that combines common encoded,
+  download, or dynamic execution indicators. Validate field mapping and benign
+  administrative matches before operational use.
+references:
+  - https://attack.mitre.org/techniques/T1059/001/
+author: Threat Hunting Project Team
+date: 2026-11-09
+tags:
+  - attack.execution
+  - attack.t1059.001
+logsource:
+  product: windows
+  service: powershell
+detection:
+  selection_event:
+    EventID: 4104
+  selection_script_content:
+    ScriptBlockText|contains:
+      - FromBase64String
+      - DownloadString
+      - DownloadFile
+      - Invoke-Expression
+      - '-EncodedCommand'
+  condition: all of selection_*
+falsepositives:
+  - Approved administrative scripts and software deployment activity
+level: medium
