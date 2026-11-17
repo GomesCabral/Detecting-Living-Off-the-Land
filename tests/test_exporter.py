@@ -4,6 +4,27 @@ import pandas as pd
 
 from src.exporter import export_alerts_csv
 
+def test_csv_formula_sanitization():
+    assert sanitize_csv_value("=1+1") == "'=1+1"
+ 
+ 
+def test_csv_at_prefix():
+    assert sanitize_csv_value("@SUM(A1:A2)") == (
+        "'@SUM(A1:A2)"
+    )
+ 
+ 
+def test_csv_safe_value():
+    assert sanitize_csv_value("powershell.exe") == (
+        "powershell.exe"
+    )
+ 
+ 
+def test_csv_leading_spaces():
+    assert sanitize_csv_value("  =1+1") == (
+        "'  =1+1"
+    )
+
 def test_export_csv():
     alerts = pd.DataFrame([
         {
