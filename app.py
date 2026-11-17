@@ -33,7 +33,7 @@ uploaded_file = st.file_uploader(
 
 if uploaded_file is not None:
     try:
-        file_extension = uploaded_file.name.lower().split(".")[-1]
+        extension = validate_file(uploaded_file)
 
         if file_extension == "csv":
             logs = load_csv(uploaded_file)
