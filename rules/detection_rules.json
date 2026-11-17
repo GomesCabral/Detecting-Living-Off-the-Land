@@ -1,0 +1,39 @@
+[
+    {
+        "id": "LOL-001",
+        "name": "Suspicious PowerShell Encoded Command",
+        "description": "PowerShell launched with an encoded command argument.",
+        "severity": "High",
+        "mitre_technique": "T1059.001",
+        "enabled": true,
+        "pattern": "^\\s*(?:powershell(?:\\.exe)?|pwsh(?:\\.exe)?)\\s+.*?-(?:enc|encodedcommand)\\b\\s+\\S+"
+    },
+    {
+        "id": "LOL-002",
+        "name": "Suspicious Certutil Download",
+        "description": "Certutil invoked with the URL cache option.",
+        "severity": "Medium",
+        "mitre_technique": "T1105",
+        "enabled": true,
+        "pattern": "^\\s*certutil(?:\\.exe)?\\s+.*?-urlcache\\b"
+    },
+    {
+        "id": "LOL-003",
+        "name": "Suspicious MSHTA Remote Execution",
+        "description": "MSHTA invoked with an HTTP or HTTPS URL.",
+        "severity": "High",
+        "mitre_technique": "T1218.005",
+        "enabled": true,
+        "pattern": "^\\s*mshta(?:\\.exe)?\\s+https?://\\S+"
+    },
+
+    {
+        "id": "LOL-004",
+        "name": "Suspicious Regsvr32 Remote Scriptlet",
+        "description": "Regsvr32 invoked with a remote scriptlet URL.",
+        "severity": "High",
+        "mitre_technique": "T1218.010",
+        "enabled": true,
+        "pattern": "^\\s*regsvr32(?:\\.exe)?\\s+.*?/i:https?://\\S+"
+    }
+]

