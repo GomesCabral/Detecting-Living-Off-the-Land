@@ -1,6 +1,8 @@
+
 import pandas as pd
 
 from src.normalizer import normalize_logs
+
 
 REQUIRED_COLUMNS = [
     "timestamp",
@@ -10,39 +12,62 @@ REQUIRED_COLUMNS = [
 ]
 
 
+
 def validate_columns(df):
-    missing_columns = []
+    missing = [
+        column
+        for column in REQUIRED_COLUMNS
+        if column not in df.columns
+    ]
 
-    for column in REQUIRED_COLUMNS:
-        if column not in df.columns:
-            missing_columns.append(column)
-
-    if missing_columns:
+    if missing:
         raise ValueError(
-            f"Missing required columns: {missing_columns}"
+            f"Missing required columns: {missing}"
         )
 
     return True
+
+
+
+def validate_logs(df):
+    if not isinstance(df, pd.DataFrame):
+        raise ValueError("Invalid logs data structure.")
+
+    if df.empty:
+        raise ValueError("The file contains no events.")
+
+    validate_columns(df)
+
+    if df["command_line"].eq("").all():
+        raise ValueError(
+            "All command_line values are empty."
+        )
+
+    return df
 
 
 def load_csv(file_path):
     try:
         df = pd.read_csv(file_path)
 
-    except pd.errors.EmptyDataError:
-        raise ValueError("The CSV file is empty.")
+    except pd.errors.EmptyDataError as error:
+        raise ValueError(
+            "The CSV file is empty."
+        ) from error
 
-    except FileNotFoundError:
-        raise ValueError("The CSV file was not found.")
+    except FileNotFoundError as error:
+        raise ValueError(
+            "The CSV file was not found."
+        ) from error
 
-    except(UnicodeDecodeError, pd.errors.ParserError):
-        raise ValueError("The CSV file could not be read correctly.")
-
-    if df.empty:
-        raise ValueError("The CSV contains no events.")
+    except (
+        UnicodeDecodeError,
+        pd.errors.ParserError
+    ) as error:
+        raise ValueError(
+            "The CSV file could not be read correctly."
+        ) from error
 
     df = normalize_logs(df)
 
-    validate_columns(df)
-
-    return df
+    return validate_logs(df)

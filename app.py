@@ -2,6 +2,7 @@
 import pandas as pd
 import streamlit as st
 
+from src.json_loader import load_json
 from src.loader import load_csv
 from src.analysis_engine import analyze_logs
 from src.filters import filter_alerts
@@ -27,12 +28,23 @@ mode = st.selectbox(
 
 uploaded_file = st.file_uploader(
     "Upload Windows Logs",
-    type=["csv"]
+    type=["csv", "json"]
 )
 
 if uploaded_file is not None:
     try:
-        logs = load_csv(uploaded_file)
+        file_extension = uploaded_file.name.lower().split(".")[-1]
+
+        if file_extension == "csv":
+            logs = load_csv(uploaded_file)
+
+        elif file_extension == "json":
+            logs = load_json(uploaded_file)
+
+        else:
+            raise ValueError(
+                "Unsupported file format."
+            )
 
         st.success("File loaded successfully!")
 
