@@ -1,9 +1,7 @@
-
 import pandas as pd
 import streamlit as st
 
-from src.json_loader import load_json
-from src.loader import load_csv
+from src.loader import load_csv, load_json, validate_file
 from src.analysis_engine import analyze_logs
 from src.filters import filter_alerts
 from src.exporter import export_alerts_csv
@@ -33,7 +31,7 @@ uploaded_file = st.file_uploader(
 
 if uploaded_file is not None:
     try:
-        extension = validate_file(uploaded_file)
+        file_extension = validate_file(uploaded_file)
 
         if file_extension == "csv":
             logs = load_csv(uploaded_file)
@@ -54,6 +52,15 @@ if uploaded_file is not None:
             logs,
             use_container_width=True
         )
+
+
+        if mode in ("Sigma", "Both"):
+            if "Image" not in logs.columns:
+                st.warning(
+                    "The Image column is missing. "
+                    "Sigma rules requiring this field "
+                    "cannot be fully evaluated."
+            )
 
         alerts = analyze_logs(logs, mode=mode)
 

