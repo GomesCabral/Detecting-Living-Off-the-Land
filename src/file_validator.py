@@ -1,7 +1,7 @@
 from pathlib import Path
  
  
-MAX_FILE_SIZE = 10 * 1024 * 1024
+MAX_FILE_SIZE = 50 * 1024 * 1024
  
 ALLOWED_EXTENSIONS = {".csv", ".json"}
  
