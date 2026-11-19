@@ -9,6 +9,10 @@ from src.loader import validate_logs
 
 
 def load_json(file_path):
+
+    if hasattr(file_path, "seek"):
+        file_path.seek(0)
+
     try:
         if hasattr(file_path, "read"):
             data = json.load(file_path)
