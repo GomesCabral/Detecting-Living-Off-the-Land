@@ -1,4 +1,3 @@
-
 import pandas as pd
 
 from pathlib import Path
@@ -70,6 +69,9 @@ def validate_logs(df):
 
 
 def load_csv(file_path):
+
+    if hasattr(file_path, "seek"):
+        file_path.seek(0)
 
     try:
         df = pd.read_csv(file_path)
