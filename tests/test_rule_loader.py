@@ -8,8 +8,23 @@ from src.rule_loader import load_rules
 def test_load_valid_rules():
     rules = load_rules()
 
-    assert len(rules) == 4
-    assert rules[0]["id"] == "LOL-001"
+    assert isinstance(rules, list)
+    assert len(rules) >= 7
+
+    rule_ids = [rule["id"] for rule in rules]
+
+    assert len(rule_ids) == len(set(rule_ids))
+
+    expected_ids = {
+        "LOL-001",
+        "LOL-002",
+        "LOL-003",
+        "LOL-004",
+        "LOL-005",
+        "LOL-006"
+    }
+
+    assert expected_ids.issubset(set(rule_ids))
 
 
 def test_invalid_json(tmp_path):

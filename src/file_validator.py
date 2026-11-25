@@ -36,7 +36,7 @@ def validate_file(file):
  
     if file_size > MAX_FILE_SIZE:
         raise ValueError(
-            "File exceeds the 10 MB size limit."
+            "File exceeds the 50 MB size limit."
         )
  
     return extension
