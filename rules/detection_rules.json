@@ -35,5 +35,34 @@
         "mitre_technique": "T1218.010",
         "enabled": true,
         "pattern": "^\\s*regsvr32(?:\\.exe)?\\s+.*?/i:https?://\\S+"
+    },
+
+    {
+        "id": "LOL-005",
+        "name": "Suspicious Bitsadmin Transfer",
+        "description": "Bitsadmin invoked to transfer content from a remote URL.",
+        "severity": "Medium",
+        "mitre_technique": "T1197",
+        "enabled": true,
+        "pattern": "(?i)\\bbitsadmin(?:\\.exe)?\\b.*?/(?:transfer|addfile)\\b.*?https?://"
+    },
+
+    {
+        "id": "LOL-006",
+        "name": "Suspicious Rundll32 Execution",
+        "description": "Rundll32 invoked with a DLL located in a temporary or user-writable directory.",
+        "severity": "High",
+        "mitre_technique": "T1218.011",
+        "enabled": true,
+        "pattern": "(?i)\\brundll32(?:\\.exe)?\\b.*?(?:\\\\temp\\\\|\\\\downloads\\\\|%temp%).*?\\.dll\\b"
+    },
+    {
+        "id": "LOL-007",
+        "name": "Suspicious CMD Execution",
+        "description": "CMD invoked to launch PowerShell with an encoded command.",
+        "severity": "Medium",
+        "mitre_technique": "T1059.003",
+        "enabled": true,
+        "pattern": "(?i)\\bcmd(?:\\.exe)?\\b.*?/[ck]\\b.*?\\b(?:powershell|pwsh)(?:\\.exe)?\\b.*?-(?:enc|encodedcommand)\\b"
     }
 ]
