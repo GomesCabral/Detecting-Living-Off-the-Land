@@ -1,17 +1,32 @@
-# Virtual environments
+# Virtual environment
 .venv/
 venv/
 
 # Python cache
 __pycache__/
 *.pyc
-.pytest_cache/
+*.pyo
 
-# Secrets
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment variables
 .env
 .env.*
-!.env.example
+
+# Streamlit secrets
 .streamlit/secrets.toml
 
-# VS Code
+# IDE
 .vscode/
+.idea/
+
+# Operating systems
+.DS_Store
+Thumbs.db
+
+# Sensitive logs
+data/private/
+exports/
