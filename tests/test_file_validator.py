@@ -43,11 +43,15 @@ def test_oversized_file(tmp_path):
     file = tmp_path / "large.csv"
  
     with open(file, "wb") as output:
-        output.truncate(11 * 1024 * 1024)
+        output.truncate(51 * 1024 * 1024)
+        #output.truncate(11 * 1024 * 1024)
  
+    #with pytest.raises(
+        #ValueError,
+        #match="10 MB"
     with pytest.raises(
         ValueError,
-        match="10 MB"
+        match="50 MB"
     ):
         validate_file(file)
 

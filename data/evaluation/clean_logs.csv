@@ -1,6 +1,6 @@
 timestamp,computer,user,Image,command_line
-2026-11-19 09:00:00,PC-01,John,C:\Windows\System32\notepad.exe,notepad.exe
-2026-11-19 09:05:00,PC-02,Alice,C:\Windows\System32\whoami.exe,whoami
-2026-11-19 09:10:00,PC-03,Bob,C:\Windows\System32\powershell.exe,powershell Get-Process
-2026-11-19 09:15:00,PC-04,Admin,C:\Windows\System32\certutil.exe,certutil -store My
-2026-11-19 09:20:00,PC-05,David,C:\Windows\System32\cmd.exe,echo powershell -enc
+2026-11-19 09:00:00,PC-01,Pedro,C:\Windows\System32\notepad.exe,notepad.exe
+2026-11-19 09:05:00,PC-02,Hafidh,C:\Windows\System32\whoami.exe,whoami
+2026-11-19 09:10:00,PC-03,Juma,C:\Windows\System32\powershell.exe,powershell Get-Process
+2026-11-19 09:15:00,PC-04,Gomes,C:\Windows\System32\certutil.exe,certutil -store My
+2026-11-19 09:20:00,PC-05,Cabral,C:\Windows\System32\cmd.exe,echo powershell -enc

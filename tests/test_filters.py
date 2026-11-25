@@ -1,4 +1,3 @@
-
 import pandas as pd
 
 from src.filters import filter_alerts

@@ -1,10 +1,22 @@
+
 import pandas as pd
 import streamlit as st
 
-from src.loader import load_csv, load_json, validate_file
+from src.loader import load_csv
+from src.json_loader import load_json
+from src.file_validator import validate_file
 from src.analysis_engine import analyze_logs
 from src.filters import filter_alerts
 from src.exporter import export_alerts_csv
+
+from src.statistics import calculate_statistics
+
+from src.visualizations import (
+    create_severity_chart,
+    create_mitre_chart,
+    create_computer_chart
+)
+
 
 st.set_page_config(
     page_title="Threat Hunting Dashboard",
@@ -12,100 +24,230 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("Threat Hunting Dashboard")
 
-st.write(
-    "Analyze suspicious Windows activity using "
-    "JSON and Sigma detection rules."
+# Header
+
+st.title("🛡️ Threat Hunting Dashboard")
+
+st.caption(
+    "Windows Security | Living Off the Land | "
+    "JSON & Sigma Detection"
 )
 
-mode = st.selectbox(
-    "Detection Engine",
-    ["Both", "JSON", "Sigma"]
-)
+st.divider()
 
-uploaded_file = st.file_uploader(
-    "Upload Windows Logs",
-    type=["csv", "json"]
-)
 
-if uploaded_file is not None:
-    try:
-        file_extension = validate_file(uploaded_file)
+# Sidebar
 
-        if file_extension == "csv":
-            logs = load_csv(uploaded_file)
+with st.sidebar:
 
-        elif file_extension == "json":
-            logs = load_json(uploaded_file)
+    st.header("Analysis Configuration")
 
-        else:
-            raise ValueError(
-                "Unsupported file format."
+    mode = st.selectbox(
+        "Detection Engine",
+        ["Both", "JSON", "Sigma"]
+    )
+
+    uploaded_file = st.file_uploader(
+        "Upload Windows Logs",
+        type=["csv", "json"]
+    )
+
+    st.caption("Maximum file size: 10 MB")
+
+    st.divider()
+
+    st.subheader("About")
+
+    st.write(
+        "A threat hunting tool for identifying "
+        "suspicious Windows command-line activity."
+    )
+
+    st.caption(
+        "Alerts indicate suspicious behavior, "
+        "not confirmed attacks."
+    )
+
+
+# Initial screen
+
+if uploaded_file is None:
+
+    st.info(
+        "Upload a CSV or JSON file "
+        "to start the analysis."
+    )
+
+    st.subheader("Supported Fields")
+
+    st.code(
+        "timestamp\n"
+        "computer\n"
+        "user\n"
+        "command_line\n"
+        "Image (required by some Sigma rules)",
+        language="text"
+    )
+
+    st.stop()
+
+
+# File validation and loading
+
+try:
+
+    extension = validate_file(uploaded_file)
+
+    if extension == ".csv":
+        logs = load_csv(uploaded_file)
+
+    elif extension == ".json":
+        logs = load_json(uploaded_file)
+
+    else:
+        raise ValueError("Unsupported file format.")
+
+    st.success(
+        f"Successfully loaded {uploaded_file.name}"
+    )
+
+    if mode in ("Sigma", "Both"):
+
+        if "Image" not in logs.columns:
+
+            st.warning(
+                "The Image column is missing. "
+                "Sigma rules requiring this field "
+                "cannot be fully evaluated."
             )
 
-        st.success("File loaded successfully!")
+        elif logs["Image"].eq("").any():
 
-        st.subheader("Windows Events")
+            missing_images = int(
+                logs["Image"].eq("").sum()
+            )
 
-        st.dataframe(
-            logs,
-            use_container_width=True
+            st.warning(
+                f"{missing_images} events have no Image. "
+                "Some Sigma detections may be unavailable."
+            )
+
+    missing_commands = int(
+        logs["command_line"].eq("").sum()
+    )
+
+    if missing_commands:
+
+        st.warning(
+            f"{missing_commands} events have "
+            "missing command lines."
         )
 
 
-        if mode in ("Sigma", "Both"):
-            if "Image" not in logs.columns:
-                st.warning(
-                    "The Image column is missing. "
-                    "Sigma rules requiring this field "
-                    "cannot be fully evaluated."
-            )
+    # Detection
+
+    with st.spinner("Analyzing Windows events..."):
 
         alerts = analyze_logs(logs, mode=mode)
 
-        total_events = len(logs)
-        total_alerts = len(alerts)
+    stats = calculate_statistics(logs, alerts)
 
-        alerted_events = len({
-            alert["event_id"]
-            for alert in alerts
-        })
 
-        affected_computers = len({
-            str(alert["computer"])
-            for alert in alerts
-            if pd.notna(alert["computer"])
-        })
+    # Metrics
 
-        col1, col2, col3, col4 = st.columns(4)
+    st.subheader("Analysis Overview")
 
-        with col1:
-            st.metric("Total Events", total_events)
+    col1, col2, col3, col4 = st.columns(4)
 
-        with col2:
-            st.metric("Total Alerts", total_alerts)
+    col1.metric(
+        "Total Events",
+        stats["total_events"]
+    )
 
-        with col3:
-            st.metric("Events With Alerts", alerted_events)
+    col2.metric(
+        "Total Alerts",
+        stats["total_alerts"]
+    )
 
-        with col4:
-            st.metric("Affected Computers", affected_computers)
+    col3.metric(
+        "Detection Rate",
+        f"{stats['detection_rate']}%"
+    )
 
-        st.subheader("Detection Results")
+    col4.metric(
+        "Affected Computers",
+        stats["affected_computers"]
+    )
+
+    st.caption(
+        f"Events with alerts: {stats['alerted_events']}"
+    )
+
+
+    # Navigation tabs
+
+    overview_tab, alerts_tab, events_tab = st.tabs([
+        "Overview",
+        "Detection Results",
+        "Raw Events"
+    ])
+
+
+    # Overview
+
+    with overview_tab:
 
         if alerts:
+
             alerts_df = pd.DataFrame(alerts)
 
-            st.warning(
-                f"{total_alerts} detections found!"
+            chart1, chart2 = st.columns(2)
+
+            with chart1:
+
+                st.plotly_chart(
+                    create_severity_chart(alerts_df),
+                    use_container_width=True
+                )
+
+            with chart2:
+
+                st.plotly_chart(
+                    create_mitre_chart(alerts_df),
+                    use_container_width=True
+                )
+
+            st.plotly_chart(
+                create_computer_chart(alerts_df),
+                use_container_width=True
             )
+
+        else:
+
+            st.info(
+                "No matching detection rules found."
+            )
+
+
+    # Detection Results
+
+    with alerts_tab:
+
+        if not alerts:
+
+            st.info("No alerts to display.")
+
+        else:
+
+            alerts_df = pd.DataFrame(alerts)
 
             st.subheader("Filter Alerts")
 
             col1, col2, col3 = st.columns(3)
 
             with col1:
+
                 severity = st.selectbox(
                     "Severity",
                     ["All"] + sorted(
@@ -117,6 +259,7 @@ if uploaded_file is not None:
                 )
 
             with col2:
+
                 computer = st.selectbox(
                     "Computer",
                     ["All"] + sorted(
@@ -129,6 +272,7 @@ if uploaded_file is not None:
                 )
 
             with col3:
+
                 technique = st.selectbox(
                     "MITRE ATT&CK",
                     ["All"] + sorted(
@@ -147,13 +291,14 @@ if uploaded_file is not None:
             )
 
             st.write(
-                f"Showing {len(filtered_df)} of "
-                f"{total_alerts} alerts."
+                f"Showing {len(filtered_df)} "
+                f"of {len(alerts_df)} alerts."
             )
 
             st.dataframe(
                 filtered_df,
-                use_container_width=True
+                use_container_width=True,
+                hide_index=True
             )
 
             st.download_button(
@@ -163,10 +308,101 @@ if uploaded_file is not None:
                 mime="text/csv"
             )
 
-        else:
-            st.info(
-                "No matching detection rules found."
-            )
 
-    except (ValueError, OSError) as error:
-        st.error(f"Analysis error: {error}")
+            # Alert Investigation
+
+            if not filtered_df.empty:
+
+                st.divider()
+
+                st.subheader("Alert Investigation")
+
+                selected_id = st.selectbox(
+                    "Select an alert",
+                    filtered_df["alert_id"].tolist()
+                )
+
+                selected_alert = filtered_df[
+                    filtered_df["alert_id"] == selected_id
+                ].iloc[0]
+
+                left, right = st.columns(2)
+
+                with left:
+
+                    st.write(
+                        "**Alert ID:**",
+                        selected_alert["alert_id"]
+                    )
+
+                    st.write(
+                        "**Event ID:**",
+                        selected_alert["event_id"]
+                    )
+
+                    st.write(
+                        "**Computer:**",
+                        selected_alert["computer"]
+                    )
+
+                    st.write(
+                        "**User:**",
+                        selected_alert["user"]
+                    )
+
+                    st.write(
+                        "**Timestamp:**",
+                        selected_alert["timestamp"]
+                    )
+
+                with right:
+
+                    st.write(
+                        "**Detection:**",
+                        selected_alert["detection"]
+                    )
+
+                    st.write(
+                        "**Severity:**",
+                        selected_alert["severity"]
+                    )
+
+                    st.write(
+                        "**MITRE Technique:**",
+                        selected_alert["mitre_technique"]
+                    )
+
+                    st.write(
+                        "**Detection Engines:**",
+                        selected_alert["engines"]
+                    )
+
+                    st.write(
+                        "**Rule IDs:**",
+                        selected_alert["rule_ids"]
+                    )
+
+                st.write("**Command Line:**")
+
+                st.code(
+                    str(selected_alert["command_line"]),
+                    language="text"
+                )
+
+
+    # Raw Events
+
+    with events_tab:
+
+        st.subheader("Normalized Windows Events")
+
+        st.dataframe(
+            logs,
+            use_container_width=True,
+            hide_index=True
+        )
+
+
+except (ValueError, OSError) as error:
+
+    st.error(f"Analysis error: {error}")

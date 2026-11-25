@@ -1,4 +1,3 @@
-
 import pytest
 
 from src.loader import load_csv
