@@ -21,7 +21,8 @@ def test_load_valid_rules():
         "LOL-003",
         "LOL-004",
         "LOL-005",
-        "LOL-006"
+        "LOL-006",
+        "LOL-007"
     }
 
     assert expected_ids.issubset(set(rule_ids))
